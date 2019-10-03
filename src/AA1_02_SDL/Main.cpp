@@ -61,7 +61,7 @@ int main(int, char*[])
 
 	// --- TEXT ---
 
-	TTF_Font * font{ TTF_OpenFont("../../res/ttf/saiyan.ttf", 80) };
+	TTF_Font * font{ TTF_OpenFont("../../res/ttf/thedelicate.ttf", 80) };
 	if (font == nullptr) { throw "No se puede inicializar la fuente"; }
 	SDL_Surface *tmpSurf{ TTF_RenderText_Blended(font, "My first SDL game", SDL_Color{216, 255, 202, 255}) };
 	if (tmpSurf == nullptr) { throw "No se puede inicializar la fuente"; }
@@ -115,6 +115,11 @@ int main(int, char*[])
 
 		//Background
 		SDL_RenderCopy(m_renderer, bgTexture, nullptr, &bgRect);
+
+		//Text
+		SDL_RenderCopy(m_renderer, textTexture, nullptr, &textRect);
+
+		//Player
 		SDL_RenderCopy(m_renderer, playerTexture, nullptr, &plRect);
 
 		SDL_RenderPresent(m_renderer);
