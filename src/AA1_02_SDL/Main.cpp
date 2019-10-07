@@ -7,6 +7,7 @@
 #include <iostream>
 #include <string>
 #include "types.h"
+#include "Button.h"
 
 //Game general information
 #define SCREEN_WIDTH 800
@@ -61,14 +62,13 @@ int main(int, char*[])
 
 	// --- TEXT ---
 
-	TTF_Font * font{ TTF_OpenFont("../../res/ttf/thedelicate.ttf", 80) };
-	if (font == nullptr) { throw "No se puede inicializar la fuente"; }
-	SDL_Surface *tmpSurf{ TTF_RenderText_Blended(font, "My first SDL game", SDL_Color{216, 255, 202, 255}) };
-	if (tmpSurf == nullptr) { throw "No se puede inicializar la fuente"; }
-	SDL_Texture *textTexture(SDL_CreateTextureFromSurface(m_renderer, tmpSurf));
-	SDL_Rect textRect{ 100, 50, tmpSurf->w, tmpSurf->h };
+	Button exitButton(m_renderer, SDL_Color{ 255, 0, 0, 255 }, SDL_Color{ 0, 0, 0, 255 },"../../res/ttf/thedelicate.ttf", "Exit", 500, 370, 40);
 
-	//tmpSurf = { };
+	Button musicButton(m_renderer, SDL_Color{ 49, 55, 181, 255 }, SDL_Color{ 0, 0, 0, 255 },"../../res/ttf/thedelicate.ttf", "Music", 300, 340, 40);
+
+	Button playButton(m_renderer, SDL_Color{ 181, 49, 168, 255 }, SDL_Color{ 0, 0, 0, 255 }, "../../res/ttf/thedelicate.ttf", "Play", 100, 340, 40);
+
+	bool mouseClicked = false;
 
 	// --- AUDIO ---
 
@@ -99,6 +99,12 @@ int main(int, char*[])
 				mousePos.x = event.motion.x;
 				mousePos.y = event.motion.y;
 				break;
+			case SDL_MOUSEBUTTONDOWN:
+				mouseClicked = true;
+				break;
+			case SDL_MOUSEBUTTONUP:
+				mouseClicked = false;
+				break;
 			default:;
 			}
 		}
@@ -107,17 +113,39 @@ int main(int, char*[])
 		plRect.x += ((mousePos.x - (plRect.w / 2)) - plRect.x) / 10;
 		plRect.y += ((mousePos.y - (plRect.h / 2)) - plRect.y) / 10;
 
+		if (exitButton.CheckMouseHover(mousePos.x, mousePos.y, m_renderer) && mouseClicked)
+		{
+			isRunning = false;
+		}
+
+		if (musicButton.CheckMouseHover(mousePos.x, mousePos.y, m_renderer) && mouseClicked)
+		{
+			if (Mix_PlayingMusic() == 0)
+			{
+				Mix_PlayMusic( soundtrack, -1);
+			}
+			else
+			{
+				Mix_HaltMusic;
+			}
+		}
+
+		if (playButton.CheckMouseHover(mousePos.x, mousePos.y, m_renderer) && mouseClicked)
+		{
+			//playButton.normalColor = new SDL_Color{ 0, 255, 0, 255};
+		}
+
 		//SDL_GetMouseState(&mouseX, &mouseY);
 
-		// DRAW
-		SDL_RenderClear(m_renderer);
+		// --- RENDER STUFF ---
 
+		SDL_RenderClear(m_renderer);
 
 		//Background
 		SDL_RenderCopy(m_renderer, bgTexture, nullptr, &bgRect);
 
 		//Text
-		SDL_RenderCopy(m_renderer, textTexture, nullptr, &textRect);
+		exitButton.RenderText(m_renderer);
 
 		//Player
 		SDL_RenderCopy(m_renderer, playerTexture, nullptr, &plRect);
