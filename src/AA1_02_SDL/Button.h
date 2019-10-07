@@ -18,6 +18,7 @@ struct Button
 	int posX, posY, sizX, sizY, fontSize;
 
 	bool mouseHovering;
+	bool clicked = false;
 
 	Button(SDL_Renderer *m_renderer, SDL_Color givColor, SDL_Color givHoverColor,std::string givPath, std::string givText, int x, int y, int givFontSize)
 	{
@@ -66,6 +67,6 @@ struct Button
 		font = TTF_OpenFont(path.c_str(), fontSize);
 		tmpSurf = TTF_RenderText_Blended(font, text.c_str(), normalColor);
 		textTexture = SDL_CreateTextureFromSurface(m_renderer, tmpSurf);
-		textRect = new SDL_Rect{ posX, posY, tmpSurf->w, tmpSurf->h };
+		SDL_RenderCopy(m_renderer, textTexture, nullptr, textRect);
 	}
 };

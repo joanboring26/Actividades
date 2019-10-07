@@ -83,6 +83,7 @@ int main(int, char*[])
 
 
 	// --- GAME LOOP ---
+	bool releaseMouse = true;
 	SDL_Event event;
 	bool isRunning = true;
 	while (isRunning) {
@@ -104,6 +105,7 @@ int main(int, char*[])
 				break;
 			case SDL_MOUSEBUTTONUP:
 				mouseClicked = false;
+				releaseMouse = false;
 				break;
 			default:;
 			}
@@ -120,19 +122,32 @@ int main(int, char*[])
 
 		if (musicButton.CheckMouseHover(mousePos.x, mousePos.y, m_renderer) && mouseClicked)
 		{
-			if (Mix_PlayingMusic() == 0)
+			if (releaseMouse == false)
 			{
-				Mix_PlayMusic( soundtrack, -1);
-			}
-			else
-			{
-				Mix_HaltMusic;
+				releaseMouse = true;
+				std::cout << Mix_PlayingMusic();
+				if (Mix_PlayingMusic() != 0)
+				{
+					Mix_HaltMusic();
+				}
+				else
+				{
+					Mix_PlayMusic(soundtrack, -1);
+				}
 			}
 		}
 
 		if (playButton.CheckMouseHover(mousePos.x, mousePos.y, m_renderer) && mouseClicked)
 		{
-			//playButton.normalColor = new SDL_Color{ 0, 255, 0, 255};
+			if (playButton.clicked == false) {
+				playButton.normalColor = SDL_Color{ 0, 255, 0, 255 };
+				playButton.updateSettings(m_renderer);
+			}
+			else
+			{
+				playButton.normalColor = SDL_Color{ 255, 0, 0, 255 };
+				playButton.updateSettings(m_renderer);
+			}
 		}
 
 		//SDL_GetMouseState(&mouseX, &mouseY);
@@ -146,6 +161,8 @@ int main(int, char*[])
 
 		//Text
 		exitButton.RenderText(m_renderer);
+		playButton.RenderText(m_renderer);
+		musicButton.RenderText(m_renderer);
 
 		//Player
 		SDL_RenderCopy(m_renderer, playerTexture, nullptr, &plRect);
