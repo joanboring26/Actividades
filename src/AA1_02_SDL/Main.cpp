@@ -54,19 +54,22 @@ int main(int, char*[])
 	if (bgTexture == nullptr) throw "Error: bgTexture init";
 
 	SDL_Rect bgRect{ 0, 0,SCREEN_WIDTH, SCREEN_HEIGHT };
-	//-->Animated Sprite ---
-	SDL_Texture* playerTexture{ IMG_LoadTexture(m_renderer, "../../res/img/pl.png") };
-	if (bgTexture == nullptr) throw "Error: plTexture init";
 
+		// Player
+	SDL_Texture* playerTexture{ IMG_LoadTexture(m_renderer, "../../res/img/kintoun.png") };
+	if (bgTexture == nullptr) throw "Error: plTexture init";
 	SDL_Rect plRect{ 0,0, 100, 100 };
 
+	//-->Animated Sprite ---
+
 	// --- TEXT ---
+	SDL_Surface *textSurface{ TTF_RenderText_Blended(TTF_OpenFont("../../res/ttf/doubledecker.ttf", 40), "test", SDL_Color{255,255,255,255}) };
 
-	Button exitButton(m_renderer, SDL_Color{ 255, 0, 0, 255 }, SDL_Color{ 0, 0, 0, 255 },"../../res/ttf/doubledecker.ttf", "Exit", 500, 370, 40);
+	Button exitButton(m_renderer, textSurface, SDL_Color{ 255, 0, 0, 255 }, SDL_Color{ 0, 0, 0, 255 },"../../res/ttf/doubledecker.ttf", "Exit", 500, 370, 40);
 
-	Button musicButton(m_renderer, SDL_Color{ 49, 55, 181, 255 }, SDL_Color{ 0, 0, 0, 255 },"../../res/ttf/doubledecker.ttf", "Music", 300, 370, 40);
+	Button musicButton(m_renderer, textSurface, SDL_Color{ 49, 55, 181, 255 }, SDL_Color{ 0, 0, 0, 255 },"../../res/ttf/doubledecker.ttf", "Music", 300, 370, 40);
 
-	Button playButton(m_renderer, SDL_Color{ 0, 255, 0, 255 }, SDL_Color{ 0, 0, 0, 255 }, "../../res/ttf/doubledecker.ttf", "Play", 100, 370, 40);
+	Button playButton(m_renderer, textSurface, SDL_Color{ 0, 255, 0, 255 }, SDL_Color{ 0, 0, 0, 255 }, "../../res/ttf/doubledecker.ttf", "Play", 100, 370, 40);
 
 	bool mouseClicked = false;
 	bool playToggle = false;
@@ -93,9 +96,6 @@ int main(int, char*[])
 			switch (event.type) {
 			case SDL_QUIT:
 				isRunning = false;
-				break;
-			case SDL_KEYDOWN:
-				if (event.key.keysym.sym == SDLK_ESCAPE) isRunning = false;
 				break;
 			case SDL_MOUSEMOTION:
 				mousePos.x = event.motion.x;
