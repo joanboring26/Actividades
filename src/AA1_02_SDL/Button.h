@@ -43,15 +43,13 @@ struct Button
 	{
 		if ((mouseX > posX && mouseX < (posX + sizX)) && ((mouseY > posY) && (mouseY < (posY + sizY))))
 		{
-			tmpSurf = TTF_RenderText_Blended(font, text.c_str(), hoverColor);
-			textTexture = SDL_CreateTextureFromSurface(m_renderer, tmpSurf);
+			changeColor(m_renderer, hoverColor);
 			mouseHovering = true;
 			return true;
 		}
 		else
 		{
-			tmpSurf = TTF_RenderText_Blended(font, text.c_str(), normalColor);
-			textTexture = SDL_CreateTextureFromSurface(m_renderer, tmpSurf);
+			changeColor(m_renderer, normalColor);
 			mouseHovering = false;
 			return false;
 		}
@@ -68,5 +66,12 @@ struct Button
 		tmpSurf = TTF_RenderText_Blended(font, text.c_str(), normalColor);
 		textTexture = SDL_CreateTextureFromSurface(m_renderer, tmpSurf);
 		SDL_RenderCopy(m_renderer, textTexture, nullptr, textRect);
+	}
+
+	void changeColor(SDL_Renderer *m_renderer, SDL_Color givColor)
+	{
+		//normalColor = givColor;
+		tmpSurf = TTF_RenderText_Blended(font, text.c_str(), givColor);
+		textTexture = SDL_CreateTextureFromSurface(m_renderer, tmpSurf);
 	}
 };

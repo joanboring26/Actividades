@@ -62,13 +62,14 @@ int main(int, char*[])
 
 	// --- TEXT ---
 
-	Button exitButton(m_renderer, SDL_Color{ 255, 0, 0, 255 }, SDL_Color{ 0, 0, 0, 255 },"../../res/ttf/thedelicate.ttf", "Exit", 500, 370, 40);
+	Button exitButton(m_renderer, SDL_Color{ 255, 0, 0, 255 }, SDL_Color{ 0, 0, 0, 255 },"../../res/ttf/doubledecker.ttf", "Exit", 500, 370, 40);
 
-	Button musicButton(m_renderer, SDL_Color{ 49, 55, 181, 255 }, SDL_Color{ 0, 0, 0, 255 },"../../res/ttf/thedelicate.ttf", "Music", 300, 340, 40);
+	Button musicButton(m_renderer, SDL_Color{ 49, 55, 181, 255 }, SDL_Color{ 0, 0, 0, 255 },"../../res/ttf/doubledecker.ttf", "Music", 300, 370, 40);
 
-	Button playButton(m_renderer, SDL_Color{ 181, 49, 168, 255 }, SDL_Color{ 0, 0, 0, 255 }, "../../res/ttf/thedelicate.ttf", "Play", 100, 340, 40);
+	Button playButton(m_renderer, SDL_Color{ 0, 255, 0, 255 }, SDL_Color{ 0, 0, 0, 255 }, "../../res/ttf/doubledecker.ttf", "Play", 100, 370, 40);
 
 	bool mouseClicked = false;
+	bool playToggle = false;
 
 	// --- AUDIO ---
 
@@ -139,15 +140,22 @@ int main(int, char*[])
 
 		if (playButton.CheckMouseHover(mousePos.x, mousePos.y, m_renderer) && mouseClicked)
 		{
-			if (playButton.clicked == false) {
-				playButton.normalColor = SDL_Color{ 0, 255, 0, 255 };
-				playButton.updateSettings(m_renderer);
-			}
-			else
+			if (releaseMouse == false)
 			{
-				playButton.normalColor = SDL_Color{ 255, 0, 0, 255 };
-				playButton.updateSettings(m_renderer);
+				releaseMouse = true;
+				if (playButton.clicked == false && !playToggle) {
+					playButton.normalColor = SDL_Color{ 255, 0, 0, 255 };
+					//playButton.changeColor(m_renderer, SDL_Color{ 255, 0, 0, 255 });
+					playToggle = true;
+				}
+				else
+				{
+					playButton.normalColor = SDL_Color{ 0, 255, 0, 255 };
+					//playButton.changeColor(m_renderer, SDL_Color{ 0, 255, 0, 255 });
+					playToggle = false;
+				}
 			}
+
 		}
 
 		//SDL_GetMouseState(&mouseX, &mouseY);
