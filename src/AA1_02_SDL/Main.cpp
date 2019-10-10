@@ -3,11 +3,15 @@
 #include <SDL_mixer.h>
 #include <SDL_ttf.h>
 
+#include <time.h>
+
 #include <exception>
 #include <iostream>
 #include <string>
 #include "types.h"
 #include "Button.h"
+#include "const.h"
+
 
 //Game general information
 #define SCREEN_WIDTH 800
@@ -49,6 +53,7 @@ int main(int, char*[])
 	const Uint8 mixFlags(MIX_INIT_MP3 | MIX_INIT_OGG);
 
 	// --- SPRITES ---
+#pragma region
 		//Background
 	SDL_Texture* bgTexture{ IMG_LoadTexture(m_renderer, "../../res/img/bg.jpg") };
 	if (bgTexture == nullptr) throw "Error: bgTexture init";
@@ -60,9 +65,25 @@ int main(int, char*[])
 	if (bgTexture == nullptr) throw "Error: plTexture init";
 	SDL_Rect plRect{ 0,0, 100, 100 };
 
+#pragma endregion
+
 	//-->Animated Sprite ---
+#pragma region 
+	SDL_Texture *pTexture = IMG_LoadTexture(m_renderer, "../../res/img/sp01.png");
+	SDL_Rect playerRect, playerPosition;
+	int textWidth{ 0 }, textHeight{ 0 }, frameWidth{ 0 }, frameHeight{ 0 };
+	SDL_QueryTexture(pTexture, NULL, NULL, &textWidth, &textHeight); //Al fer &textWidth i &frameHeight aquestes s'omplen amb els valors de tamany de la textura
+	frameWidth = textWidth / 6;
+	frameHeight = textHeight / 1;
+	playerPosition.x = playerPosition.y = 0;
+	playerRect.x = playerRect.y = 0;
+	playerPosition.h = playerRect.h = frameHeight;
+	playerPosition.w = playerRect.w = frameWidth;
+	int frameTime = 0;
+#pragma endregion
 
 	// --- TEXT ---
+#pragma region 
 	SDL_Surface *textSurface{ TTF_RenderText_Blended(TTF_OpenFont("../../res/ttf/doubledecker.ttf", 40), "test", SDL_Color{255,255,255,255}) };
 
 	Button exitButton(m_renderer, textSurface, SDL_Color{ 255, 0, 0, 255 }, SDL_Color{ 0, 0, 0, 255 },"../../res/ttf/doubledecker.ttf", "Exit", 500, 370, 40);
@@ -73,9 +94,10 @@ int main(int, char*[])
 
 	bool mouseClicked = false;
 	bool playToggle = false;
+#pragma endregion
 
 	// --- AUDIO ---
-
+#pragma region
 	if (Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, 2, 1024) == -1)
 	{
 		throw "Unable to initialize SDL_mixer audio systems";
@@ -84,13 +106,19 @@ int main(int, char*[])
 	if (!soundtrack) throw "Unable to load the Mix_Music soundtrack";
 	Mix_VolumeMusic(MIX_MAX_VOLUME / 2);
 	Mix_PlayMusic(soundtrack, -1);
+#pragma endregion
 
+	// --- TIME  ---
+	clock_t lastTime = clock();
+	float timeDown = 60.;
+	float deltaTime = 0;
 
 	// --- GAME LOOP ---
 	bool releaseMouse = true;
 	SDL_Event event;
 	bool isRunning = true;
-	while (isRunning) {
+	while (isRunning) 
+	{
 		// HANDLE EVENTS
 		while (SDL_PollEvent(&event)) {
 			switch (event.type) {
@@ -112,7 +140,32 @@ int main(int, char*[])
 			}
 		}
 
-		// UPDATE
+		// --- UPDATE
+
+
+		// - ANIMATED SPRITES -
+
+		frameTime++;
+		if (FPS / frameTime <= 9)
+		{
+			frameTime = 0;
+			playerRect.x += frameWidth;
+			if (playerRect.x >= textWidth)
+			{
+				playerRect.x = 0;
+			}
+		}
+
+		// - TIME -
+		deltaTime = (clock() - lastTime);
+		lastTime = clock();
+		deltaTime /= CLOCKS_PER_SEC;
+		timeDown -= deltaTime; // Update timer
+		std::cout << timeDown << std::endl;
+
+		// - OTHER -
+
+
 		plRect.x += ((mousePos.x - (plRect.w / 2)) - plRect.x) / 10;
 		plRect.y += ((mousePos.y - (plRect.h / 2)) - plRect.y) / 10;
 
@@ -145,13 +198,13 @@ int main(int, char*[])
 				releaseMouse = true;
 				if (playButton.clicked == false && !playToggle) {
 					playButton.normalColor = SDL_Color{ 255, 0, 0, 255 };
-					//playButton.changeColor(m_renderer, SDL_Color{ 255, 0, 0, 255 });
+					playButton.permanentChangeColor(m_renderer, SDL_Color{ 255, 0, 0, 255 });
 					playToggle = true;
 				}
 				else
 				{
 					playButton.normalColor = SDL_Color{ 0, 255, 0, 255 };
-					//playButton.changeColor(m_renderer, SDL_Color{ 0, 255, 0, 255 });
+					playButton.permanentChangeColor(m_renderer, SDL_Color{ 0, 255, 0, 255 });
 					playToggle = false;
 				}
 			}
@@ -160,20 +213,23 @@ int main(int, char*[])
 
 		//SDL_GetMouseState(&mouseX, &mouseY);
 
-		// --- RENDER STUFF ---
+		// --- RENDER STUFF
 
 		SDL_RenderClear(m_renderer);
 
-		//Background
+		// - Background - 
 		SDL_RenderCopy(m_renderer, bgTexture, nullptr, &bgRect);
 
-		//Text
+		// - Text -
 		exitButton.RenderText(m_renderer);
 		playButton.RenderText(m_renderer);
 		musicButton.RenderText(m_renderer);
 
-		//Player
+		// - Player - 
 		SDL_RenderCopy(m_renderer, playerTexture, nullptr, &plRect);
+
+		// - Animated sprites -
+		SDL_RenderCopy(m_renderer, pTexture, &playerRect, &playerPosition);
 
 		SDL_RenderPresent(m_renderer);
 
