@@ -11,6 +11,7 @@
 #include "types.h"
 #include "Button.h"
 #include "const.h"
+#include "utils.h"
 
 
 //Game general information
@@ -109,9 +110,7 @@ int main(int, char*[])
 #pragma endregion
 
 	// --- TIME  ---
-	clock_t lastTime = clock();
-	float timeDown = 60.;
-	float deltaTime = 0;
+	timer testTimer();
 
 	// --- GAME LOOP ---
 	bool releaseMouse = true;
@@ -157,11 +156,8 @@ int main(int, char*[])
 		}
 
 		// - TIME -
-		deltaTime = (clock() - lastTime);
-		lastTime = clock();
-		deltaTime /= CLOCKS_PER_SEC;
-		timeDown -= deltaTime; // Update timer
-		std::cout << timeDown << std::endl;
+
+		//if(testTimer.updateTimer())
 
 		// - OTHER -
 
