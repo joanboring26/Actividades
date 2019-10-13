@@ -8,10 +8,10 @@
 #include <exception>
 #include <iostream>
 #include <string>
-#include "types.h"
 #include "Button.h"
 #include "const.h"
 #include "utils.h"
+
 
 
 //Game general information
@@ -70,17 +70,8 @@ int main(int, char*[])
 
 	//-->Animated Sprite ---
 #pragma region 
-	SDL_Texture *pTexture = IMG_LoadTexture(m_renderer, "../../res/img/sp01.png");
-	SDL_Rect playerRect, playerPosition;
-	int textWidth{ 0 }, textHeight{ 0 }, frameWidth{ 0 }, frameHeight{ 0 };
-	SDL_QueryTexture(pTexture, NULL, NULL, &textWidth, &textHeight); //Al fer &textWidth i &frameHeight aquestes s'omplen amb els valors de tamany de la textura
-	frameWidth = textWidth / 6;
-	frameHeight = textHeight / 1;
-	playerPosition.x = playerPosition.y = 0;
-	playerRect.x = playerRect.y = 0;
-	playerPosition.h = playerRect.h = frameHeight;
-	playerPosition.w = playerRect.w = frameWidth;
-	int frameTime = 0;
+
+
 #pragma endregion
 
 	// --- TEXT ---
@@ -110,124 +101,207 @@ int main(int, char*[])
 #pragma endregion
 
 	// --- TIME  ---
-	timer testTimer();
+	timer testTimer(5);
 
 	// --- GAME LOOP ---
 	bool releaseMouse = true;
 	SDL_Event event;
 	bool isRunning = true;
+	bool yes = true;
+
+
+
 	while (isRunning) 
 	{
-		// HANDLE EVENTS
-		while (SDL_PollEvent(&event)) {
-			switch (event.type) {
-			case SDL_QUIT:
+		std::cout << testTimer.updateTimer() << std::endl;
+		if (!yes)
+		{
+			// HANDLE EVENTS
+			while (SDL_PollEvent(&event)) {
+				switch (event.type) {
+				case SDL_QUIT:
+					isRunning = false;
+					break;
+				case SDL_MOUSEMOTION:
+					mousePos.x = event.motion.x;
+					mousePos.y = event.motion.y;
+					break;
+				case SDL_MOUSEBUTTONDOWN:
+					mouseClicked = true;
+					break;
+				case SDL_MOUSEBUTTONUP:
+					mouseClicked = false;
+					releaseMouse = false;
+					break;
+				default:;
+				}
+			}
+
+			// --- UPDATE
+
+
+			// - ANIMATED SPRITES -
+
+
+
+			// - TIME -
+
+			//if(testTimer.updateTimer())
+
+			// - OTHER -
+
+
+			plRect.x += ((mousePos.x - (plRect.w / 2)) - plRect.x) / 10;
+			plRect.y += ((mousePos.y - (plRect.h / 2)) - plRect.y) / 10;
+
+			if (exitButton.CheckMouseHover(mousePos.x, mousePos.y, m_renderer) && mouseClicked)
+			{
 				isRunning = false;
-				break;
-			case SDL_MOUSEMOTION:
-				mousePos.x = event.motion.x;
-				mousePos.y = event.motion.y;
-				break;
-			case SDL_MOUSEBUTTONDOWN:
-				mouseClicked = true;
-				break;
-			case SDL_MOUSEBUTTONUP:
-				mouseClicked = false;
-				releaseMouse = false;
-				break;
-			default:;
 			}
-		}
 
-		// --- UPDATE
-
-
-		// - ANIMATED SPRITES -
-
-		frameTime++;
-		if (FPS / frameTime <= 9)
-		{
-			frameTime = 0;
-			playerRect.x += frameWidth;
-			if (playerRect.x >= textWidth)
+			if (musicButton.CheckMouseHover(mousePos.x, mousePos.y, m_renderer) && mouseClicked)
 			{
-				playerRect.x = 0;
+				if (releaseMouse == false)
+				{
+					releaseMouse = true;
+					std::cout << Mix_PlayingMusic();
+					if (Mix_PlayingMusic() != 0)
+					{
+						Mix_HaltMusic();
+					}
+					else
+					{
+						Mix_PlayMusic(soundtrack, -1);
+					}
+				}
 			}
-		}
 
-		// - TIME -
-
-		//if(testTimer.updateTimer())
-
-		// - OTHER -
-
-
-		plRect.x += ((mousePos.x - (plRect.w / 2)) - plRect.x) / 10;
-		plRect.y += ((mousePos.y - (plRect.h / 2)) - plRect.y) / 10;
-
-		if (exitButton.CheckMouseHover(mousePos.x, mousePos.y, m_renderer) && mouseClicked)
-		{
-			isRunning = false;
-		}
-
-		if (musicButton.CheckMouseHover(mousePos.x, mousePos.y, m_renderer) && mouseClicked)
-		{
-			if (releaseMouse == false)
+			if (playButton.CheckMouseHover(mousePos.x, mousePos.y, m_renderer) && mouseClicked)
 			{
-				releaseMouse = true;
-				std::cout << Mix_PlayingMusic();
-				if (Mix_PlayingMusic() != 0)
+				if (releaseMouse == false)
 				{
-					Mix_HaltMusic();
+					releaseMouse = true;
+					if (playButton.clicked == false && !playToggle) {
+						playButton.normalColor = SDL_Color{ 255, 0, 0, 255 };
+						playButton.permanentChangeColor(m_renderer, SDL_Color{ 255, 0, 0, 255 });
+						playToggle = true;
+					}
+					else
+					{
+						playButton.normalColor = SDL_Color{ 0, 255, 0, 255 };
+						playButton.permanentChangeColor(m_renderer, SDL_Color{ 0, 255, 0, 255 });
+						playToggle = false;
+					}
 				}
-				else
-				{
-					Mix_PlayMusic(soundtrack, -1);
-				}
-			}
-		}
 
-		if (playButton.CheckMouseHover(mousePos.x, mousePos.y, m_renderer) && mouseClicked)
+			}
+
+			//SDL_GetMouseState(&mouseX, &mouseY);
+
+			// --- RENDER STUFF
+
+			SDL_RenderClear(m_renderer);
+
+			// - Background - 
+			SDL_RenderCopy(m_renderer, bgTexture, nullptr, &bgRect);
+
+			// - Text -
+			exitButton.RenderText(m_renderer);
+			playButton.RenderText(m_renderer);
+			musicButton.RenderText(m_renderer);
+
+			// - Player - 
+			SDL_RenderCopy(m_renderer, playerTexture, nullptr, &plRect);
+
+			// - Animated sprites -
+
+
+			SDL_RenderPresent(m_renderer);
+		}
+		else
 		{
-			if (releaseMouse == false)
+		// --- INPUT ---
+		while (SDL_PollEvent(&event)) {
+			switch (event.type) 
 			{
-				releaseMouse = true;
-				if (playButton.clicked == false && !playToggle) {
-					playButton.normalColor = SDL_Color{ 255, 0, 0, 255 };
-					playButton.permanentChangeColor(m_renderer, SDL_Color{ 255, 0, 0, 255 });
-					playToggle = true;
-				}
-				else
-				{
-					playButton.normalColor = SDL_Color{ 0, 255, 0, 255 };
-					playButton.permanentChangeColor(m_renderer, SDL_Color{ 0, 255, 0, 255 });
-					playToggle = false;
-				}
-			}
+				case SDL_QUIT:
+					isRunning = false;
+					break;
 
+				case SDL_KEYDOWN:
+					switch (event.key.keysym.sym) 
+					{
+						case SDLK_LEFT:
+
+							break;
+						case SDLK_RIGHT:
+
+							break;
+						case SDLK_UP:
+
+							break;
+						case SDLK_DOWN:
+
+							break;
+						case SDLK_w:
+
+							break;
+						case SDLK_a:
+
+							break;
+						case SDLK_s:
+
+							break;
+						case SDLK_d:
+
+							break;
+						default:
+							break;
+					}
+
+				case SDL_KEYUP:
+					switch (event.key.keysym.sym)
+					{
+						case SDLK_LEFT:
+							break;
+						case SDLK_RIGHT:
+							break;
+						case SDLK_UP:
+							break;
+						case SDLK_DOWN:
+							break;
+						case SDLK_w:
+
+							break;
+						case SDLK_a:
+
+							break;
+						case SDLK_s:
+
+							break;
+						case SDLK_d:
+
+							break;
+
+						default:
+							break;
+					}
+					break;
+
+				default:;
+			}
 		}
 
-		//SDL_GetMouseState(&mouseX, &mouseY);
+		// --- UPDATE ---
 
-		// --- RENDER STUFF
 
-		SDL_RenderClear(m_renderer);
 
-		// - Background - 
-		SDL_RenderCopy(m_renderer, bgTexture, nullptr, &bgRect);
-
-		// - Text -
-		exitButton.RenderText(m_renderer);
-		playButton.RenderText(m_renderer);
-		musicButton.RenderText(m_renderer);
-
-		// - Player - 
-		SDL_RenderCopy(m_renderer, playerTexture, nullptr, &plRect);
-
-		// - Animated sprites -
-		SDL_RenderCopy(m_renderer, pTexture, &playerRect, &playerPosition);
+		// --- RENDER ---
 
 		SDL_RenderPresent(m_renderer);
+
+		}
+
 
 	}
 
