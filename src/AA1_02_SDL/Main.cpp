@@ -117,6 +117,9 @@ int main(int, char*[])
 	bool isRunning = true;
 	bool yes = true;
 
+	// --- INPUTS ---
+	inputs gInp;
+
 	while (isRunning) 
 	{
 		std::cout << testTimer.updateTimer() << std::endl;
@@ -227,91 +230,14 @@ int main(int, char*[])
 		else
 		{
 		// --- INPUT ---
-		while (SDL_PollEvent(&event)) {
-			switch (event.type) 
-			{
-				case SDL_QUIT:
-					isRunning = false;
-					break;
-
-				case SDL_KEYDOWN:
-					switch (event.key.keysym.sym) 
-					{
-						case SDLK_LEFT:
-							player1.velX = -1;
-							std::cout << "left \n";
-							break;
-						case SDLK_RIGHT:
-							player1.velX = 1;
-							break;
-						case SDLK_UP:
-							player1.velY = -1;
-							break;
-						case SDLK_DOWN:
-							player1.velY = 1;
-							break;
-						case SDLK_w:
-							player2.velY = -1;
-							break;
-						case SDLK_a:
-							player2.velX = -1;
-							break;
-						case SDLK_s:
-							player2.velY = 1;
-							break;
-						case SDLK_d:
-							player2.velX = 1;
-							break;
-						default:
-							break;
-					}
-				
-				case SDL_KEYUP:
-					switch (event.key.keysym.sym)
-					{
-					case SDLK_LEFT:
-						player1.velX = 0;
-						std::cout << "left NO!!!\n";
-						break;
-					case SDLK_RIGHT:
-						player1.velX = 0;
-						break;
-					case SDLK_UP:
-						player1.velY = 0;
-						break;
-					case SDLK_DOWN:
-						player1.velY = 0;
-						break;
-					case SDLK_w:
-						player2.velY = 0;
-						break;
-					case SDLK_a:
-						player2.velX = 0;
-						break;
-					case SDLK_s:
-						player2.velY = 0;
-						break;
-					case SDLK_d:
-						player2.velX = 0;
-						break;
-
-						default:
-							break;
-					}
-					break;
-					
-
-				default:;
-			}
-		}
+		gInp.getKeyboardInputs();
 
 		// --- UPDATE ---
 
-		player1.updatePlayer();
-		player1.updatePlayerSprite();
 
-		player2.updatePlayer();
-		player2.updatePlayerSprite();
+		player1.updatePlayer( gInp.keyboard, 0);
+
+		player2.updatePlayer(gInp.keyboard, 1);
 
 		// --- RENDER ---
 

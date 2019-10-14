@@ -2,8 +2,29 @@
 #include <time.h>
 #include <SDL.h>
 #include <SDL_image.h>
+#include <windows.h>
 #include "const.h"
 
+struct inputs
+{
+	bool *keyboard = new bool[(int)keyPressed::COUNT];
+
+	int getKeyboardInputs()
+	{
+		int inputs = 0;
+		inputs += keyboard[(int)keyPressed::ESC] = GetAsyncKeyState(VK_ESCAPE);
+		inputs += keyboard[(int)keyPressed::SPACE] = GetAsyncKeyState(VK_SPACE);
+		inputs += keyboard[(int)keyPressed::UP] = GetAsyncKeyState(VK_UP);
+		inputs += keyboard[(int)keyPressed::DOWN] = GetAsyncKeyState(VK_DOWN);
+		inputs += keyboard[(int)keyPressed::LEFT] = GetAsyncKeyState(VK_LEFT);
+		inputs += keyboard[(int)keyPressed::RIGHT] = GetAsyncKeyState(VK_RIGHT);
+		inputs += keyboard[(int)keyPressed::W] = GetAsyncKeyState(0x57);
+		inputs += keyboard[(int)keyPressed::A] = GetAsyncKeyState(0x41);
+		inputs += keyboard[(int)keyPressed::S] = GetAsyncKeyState(0x53);
+		inputs += keyboard[(int)keyPressed::D] = GetAsyncKeyState(0x44);
+		return inputs;
+	}
+};
 struct timer
 {
 	clock_t lastTime;
@@ -53,38 +74,6 @@ struct Vector2
 	{
 		x = valX;
 		y = valY;
-	}
-};
-
-struct inputs
-{
-	SDL_Event event;
-
-	bool mouseStatus = false;
-	bool isRunning = true;
-
-
-
-	void updateInputs()
-	{
-		while (SDL_PollEvent(&event)) {
-			switch (event.type) {
-			case SDL_QUIT:
-				isRunning = false;
-				break;
-			case SDL_MOUSEMOTION:
-				//mousePos.x = event.motion.x;
-				//mousePos.y = event.motion.y;
-				break;
-			case SDL_MOUSEBUTTONDOWN:
-				mouseStatus = true;
-				break;
-			case SDL_MOUSEBUTTONUP:
-				mouseStatus = false;
-				break;
-			default:;
-			}
-		}
 	}
 };
 
