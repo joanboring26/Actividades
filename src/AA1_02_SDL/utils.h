@@ -106,7 +106,6 @@ struct animatedSprite
 	{
 		renderer = m_renderer;
 		pTexture = IMG_LoadTexture(renderer, givTexturePath.c_str());
-		int textWidth{ 0 }, textHeight{ 0 }, frameWidth{ 0 }, frameHeight{ 0 };
 		SDL_QueryTexture(pTexture, NULL, NULL, &textWidth, &textHeight); //Al fer &textWidth i &frameHeight aquestes s'omplen amb els valors de tamany de la textura
 		frameWidth = textWidth / givHorFrames;
 		frameHeight = textHeight / givVerFrames;

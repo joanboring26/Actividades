@@ -11,6 +11,7 @@
 #include "Button.h"
 #include "const.h"
 #include "utils.h"
+#include "player.h"
 
 
 
@@ -71,8 +72,15 @@ int main(int, char*[])
 	//-->Animated Sprite ---
 #pragma region 
 
+	animatedSprite playerAnim1( m_renderer, "../../res/img/sp01.png", 6, 6, 1);
+	animatedSprite playerAnim2( m_renderer, "../../res/img/sp01.png", 6, 6, 1);
 
 #pragma endregion
+
+	// --- PLAYERS ---
+
+	player player1( &playerAnim1, 200, 200, 10);
+	player player2( &playerAnim2, 500, 500, 10);
 
 	// --- TEXT ---
 #pragma region 
@@ -108,8 +116,6 @@ int main(int, char*[])
 	SDL_Event event;
 	bool isRunning = true;
 	bool yes = true;
-
-
 
 	while (isRunning) 
 	{
@@ -232,61 +238,68 @@ int main(int, char*[])
 					switch (event.key.keysym.sym) 
 					{
 						case SDLK_LEFT:
-
+							player1.velX = -1;
+							std::cout << "left \n";
 							break;
 						case SDLK_RIGHT:
-
+							player1.velX = 1;
 							break;
 						case SDLK_UP:
-
+							player1.velY = -1;
 							break;
 						case SDLK_DOWN:
-
+							player1.velY = 1;
 							break;
 						case SDLK_w:
-
+							player2.velY = -1;
 							break;
 						case SDLK_a:
-
+							player2.velX = -1;
 							break;
 						case SDLK_s:
-
+							player2.velY = 1;
 							break;
 						case SDLK_d:
-
+							player2.velX = 1;
 							break;
 						default:
 							break;
 					}
-
+				
 				case SDL_KEYUP:
 					switch (event.key.keysym.sym)
 					{
-						case SDLK_LEFT:
-							break;
-						case SDLK_RIGHT:
-							break;
-						case SDLK_UP:
-							break;
-						case SDLK_DOWN:
-							break;
-						case SDLK_w:
-
-							break;
-						case SDLK_a:
-
-							break;
-						case SDLK_s:
-
-							break;
-						case SDLK_d:
-
-							break;
+					case SDLK_LEFT:
+						player1.velX = 0;
+						std::cout << "left NO!!!\n";
+						break;
+					case SDLK_RIGHT:
+						player1.velX = 0;
+						break;
+					case SDLK_UP:
+						player1.velY = 0;
+						break;
+					case SDLK_DOWN:
+						player1.velY = 0;
+						break;
+					case SDLK_w:
+						player2.velY = 0;
+						break;
+					case SDLK_a:
+						player2.velX = 0;
+						break;
+					case SDLK_s:
+						player2.velY = 0;
+						break;
+					case SDLK_d:
+						player2.velX = 0;
+						break;
 
 						default:
 							break;
 					}
 					break;
+					
 
 				default:;
 			}
@@ -294,9 +307,16 @@ int main(int, char*[])
 
 		// --- UPDATE ---
 
+		player1.updatePlayer();
+		player1.updatePlayerSprite();
 
+		player2.updatePlayer();
+		player2.updatePlayerSprite();
 
 		// --- RENDER ---
+
+		player1.renderPlayer();
+		player2.renderPlayer();
 
 		SDL_RenderPresent(m_renderer);
 
