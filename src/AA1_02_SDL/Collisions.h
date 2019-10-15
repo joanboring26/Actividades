@@ -37,4 +37,12 @@ struct boxCollision
 		return true;
 	}
 
+	bool boxColliding(boxCollision *givBox)
+	{
+		if (posX + widthX < givBox->posX || posX > givBox->posX + givBox->widthX) return false;
+		if (posY + widthY < givBox->posY || posY > givBox->posY + givBox->widthY) return false;
+
+		return true;
+	}
+
 };

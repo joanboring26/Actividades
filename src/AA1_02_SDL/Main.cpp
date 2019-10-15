@@ -74,7 +74,7 @@ int main(int, char*[])
 #pragma region 
 
 	animatedSprite playerAnim1( m_renderer, "../../res/img/sp01.png", 6, 6, 1);
-	animatedSprite playerAnim2( m_renderer, "../../res/img/sp01.png", 6, 6, 1);
+	animatedSprite playerAnim2( m_renderer, "../../res/img/sp02.png", 6, 6, 1);
 
 #pragma endregion
 
