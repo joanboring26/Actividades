@@ -59,6 +59,7 @@ int main(int, char*[])
 		//Background
 	SDL_Texture* bgTexture{ IMG_LoadTexture(m_renderer, "../../res/img/bg.jpg") };
 	if (bgTexture == nullptr) throw "Error: bgTexture init";
+	sprite testSprite( m_renderer, "../../res/img/kintoun.png", 500, 500, 2);
 
 	SDL_Rect bgRect{ 0, 0,SCREEN_WIDTH, SCREEN_HEIGHT };
 
@@ -237,9 +238,16 @@ int main(int, char*[])
 
 		player1.updatePlayer( gInp.keyboard, 0);
 
-		player2.updatePlayer(gInp.keyboard, 1);
+		player2.updatePlayer( gInp.keyboard, 1);
+
+
 
 		// --- RENDER ---
+
+		// - Background - 
+		SDL_RenderCopy(m_renderer, bgTexture, nullptr, &bgRect);
+
+		testSprite.renderSprite();
 
 		player1.renderPlayer();
 		player2.renderPlayer();

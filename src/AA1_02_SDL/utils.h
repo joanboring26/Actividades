@@ -25,6 +25,7 @@ struct inputs
 		return inputs;
 	}
 };
+
 struct timer
 {
 	clock_t lastTime;
@@ -146,4 +147,40 @@ struct animatedSprite
 		return *this;
 	}
 
+};
+
+struct sprite
+{
+	SDL_Renderer *renderer;
+	SDL_Texture *pTexture;
+	SDL_Rect textureRect;
+	int textWidth{ 0 }, textHeight{ 0 };
+	int frameTime = 0;
+	int totFrames;
+
+	sprite()
+	{
+
+	}
+
+	sprite(SDL_Renderer *m_renderer, std::string givTexturePath, int posX, int posY,int scale)
+	{
+		renderer = m_renderer;
+		pTexture = IMG_LoadTexture(renderer, givTexturePath.c_str());
+		SDL_QueryTexture(pTexture, NULL, NULL, &textWidth, &textHeight);
+		textWidth /= scale;
+		textHeight /= scale;
+		textureRect = SDL_Rect{posX, posY, textWidth, textHeight};
+	}
+
+	void renderSprite()
+	{
+		SDL_RenderCopy(renderer, pTexture, nullptr, &textureRect);
+	}
+
+	void setSpritePos(int givX, int givY)
+	{
+		textureRect.x = givX;
+		textureRect.y = givY;
+	}
 };

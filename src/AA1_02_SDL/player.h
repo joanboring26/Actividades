@@ -1,10 +1,13 @@
 #pragma once
 #include "utils.h"
 #include "const.h"
+#include "Collisions.h"
 
 struct player
 {
 	animatedSprite *playerSprite;
+
+
 
 	int posX, posY;
 	int velX{ 0 }, velY{ 0 };
@@ -36,11 +39,11 @@ struct player
 		switch (playerNum)
 		{
 		case 0:
-			if(&givKeys[(int)keyPressed::UP])
+			if(givKeys[(int)keyPressed::UP])
 			{
 				velY = -1;
 			}
-			else if (&givKeys[(int)keyPressed::DOWN])
+			else if (givKeys[(int)keyPressed::DOWN])
 			{
 				velY = 1;
 			}
@@ -48,11 +51,11 @@ struct player
 			{
 				velY = 0;
 			}
-			if (&givKeys[(int)keyPressed::LEFT])
+			if (givKeys[(int)keyPressed::LEFT])
 			{
 				velX = -1;
 			}
-			else if (&givKeys[(int)keyPressed::RIGHT])
+			else if (givKeys[(int)keyPressed::RIGHT])
 			{
 				velX = 1;
 			}
@@ -62,11 +65,11 @@ struct player
 			}
 			break;
 		case 1:
-			if (&givKeys[(int)keyPressed::W])
+			if (givKeys[(int)keyPressed::W])
 			{
 				velY = -1;
 			}
-			else if (&givKeys[(int)keyPressed::S])
+			else if (givKeys[(int)keyPressed::S])
 			{
 				velY = 1;
 			}
@@ -74,11 +77,11 @@ struct player
 			{
 				velY = 0;
 			}
-			if (&givKeys[(int)keyPressed::A])
+			if (givKeys[(int)keyPressed::A])
 			{
 				velX = -1;
 			}
-			else if (&givKeys[(int)keyPressed::D])
+			else if (givKeys[(int)keyPressed::D])
 			{
 				velX = 1;
 			}
