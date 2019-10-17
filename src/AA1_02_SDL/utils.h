@@ -4,14 +4,39 @@
 #include <SDL.h>
 #include <SDL_image.h>
 #include <windows.h>
+#include <vector>
 #include "const.h"
+
+struct Vector2
+{
+	int x;
+	int y;
+	Vector2()
+	{
+		x = 0;
+		y = 0;
+	}
+	Vector2(int valX, int valY)
+	{
+		x = valX;
+		y = valY;
+	}
+};
 
 struct animatedSpriteSet
 {
-	int xLoffset = 0;
-	int xRoffset = 0;
-	int yToffset = 0;
-	int yBoffset = 0;
+	Vector2 p1;
+	Vector2 p2;
+
+
+
+	animatedSpriteSet(int x1, int y1, int x2, int y2)
+	{
+		p1.x = x1;
+		p1.y = y1;
+		p2.x = x2;
+		p2.y = y2;
+	}
 };
 
 struct inputs
@@ -68,22 +93,6 @@ struct timer
 			return true;
 		}
 		return false;
-	}
-};
-
-struct Vector2
-{
-	int x;
-	int y;
-	Vector2()
-	{
-		x = 0;
-		y = 0;
-	}
-	Vector2(int valX, int valY)
-	{
-		x = valX;
-		y = valY;
 	}
 };
 
