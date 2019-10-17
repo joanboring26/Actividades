@@ -1,9 +1,18 @@
 #pragma once
 #include <time.h>
+#include <string>
 #include <SDL.h>
 #include <SDL_image.h>
 #include <windows.h>
 #include "const.h"
+
+struct animatedSpriteSet
+{
+	int xLoffset = 0;
+	int xRoffset = 0;
+	int yToffset = 0;
+	int yBoffset = 0;
+};
 
 struct inputs
 {
@@ -78,82 +87,11 @@ struct Vector2
 	}
 };
 
-struct animatedSprite
-{
-	SDL_Renderer *renderer;
-	SDL_Texture *pTexture;
-	SDL_Rect playerRect, playerPosition;
-	int textWidth{ 0 }, textHeight{ 0 }, frameWidth{ 0 }, frameHeight{ 0 };
-	int frameTime = 0;
-	int totFrames;
-
-	animatedSprite()
-	{
-
-	}
-
-	animatedSprite(SDL_Renderer *m_renderer, std::string givTexturePath,int givTotFrames, int givHorFrames, int givVerFrames)
-	{
-		renderer = m_renderer;
-		pTexture = IMG_LoadTexture(renderer, givTexturePath.c_str());
-		SDL_QueryTexture(pTexture, NULL, NULL, &textWidth, &textHeight); //Al fer &textWidth i &frameHeight aquestes s'omplen amb els valors de tamany de la textura
-		frameWidth = textWidth / givHorFrames;
-		frameHeight = textHeight / givVerFrames;
-		playerPosition.x = playerPosition.y = 0;
-		playerRect.x = playerRect.y = 0;
-		playerPosition.h = playerRect.h = frameHeight;
-		playerPosition.w = playerRect.w = frameWidth;
-	}
-
-	void updateSprite()
-	{
-		frameTime++;
-		if (FPS / frameTime <= 9)
-		{
-			frameTime = 0;
-			playerRect.x += frameWidth;
-			if (playerRect.x >= textWidth)
-			{
-				playerRect.x = 0;
-			}
-		}
-	}
-
-	void renderSprite()
-	{
-		SDL_RenderCopy(renderer, pTexture, &playerRect, &playerPosition);
-	}
-
-	void setSpritePos(int givX, int givY)
-	{
-		playerPosition.x = givX;
-		playerPosition.y = givY;
-	}
-
-
-	animatedSprite& operator =(const animatedSprite &otherSprite)
-	{
-		renderer = otherSprite.renderer;
-		pTexture = otherSprite.pTexture;
-		playerRect = otherSprite.playerRect;
-		playerPosition = otherSprite.playerPosition;
-		textWidth = otherSprite.textWidth;
-		textHeight = otherSprite.textHeight;
-		frameWidth = otherSprite.frameWidth;
-		frameHeight = otherSprite.frameHeight;
-		frameTime = otherSprite.frameTime;
-		totFrames = otherSprite.totFrames;
-
-		return *this;
-	}
-
-};
-
 struct sprite
 {
 	SDL_Renderer *renderer;
 	SDL_Texture *pTexture;
-	SDL_Rect textureRect;
+	SDL_Rect textureRect, renderRect;
 	int textWidth{ 0 }, textHeight{ 0 };
 	int frameTime = 0;
 	int totFrames;
@@ -175,7 +113,7 @@ struct sprite
 
 	void renderSprite()
 	{
-		SDL_RenderCopy(renderer, pTexture, nullptr, &textureRect);
+		SDL_RenderCopy(renderer, pTexture, &textureRect, &renderRect);
 	}
 
 	void setSpritePos(int givX, int givY)
@@ -183,4 +121,86 @@ struct sprite
 		textureRect.x = givX;
 		textureRect.y = givY;
 	}
+
+};
+
+struct animatedSprite
+{
+	SDL_Rect frameRect, playerPosition;
+	sprite *animSprite;
+	int textWidth{ 0 }, textHeight{ 0 }, frameWidth{ 0 }, frameHeight{ 0 };
+	int frameTime = 0;
+	int totFrames;
+
+	animatedSprite()
+	{
+
+	}
+
+	animatedSprite(SDL_Renderer *m_renderer, std::string givTexturePath, int givX, int givY,int givTotFrames, int givHorFrames, int givVerFrames)
+	{
+		animSprite = new sprite(m_renderer, givTexturePath, givX, givY, 1);
+		SDL_QueryTexture(animSprite->pTexture, NULL, NULL, &textWidth, &textHeight); //Al fer &textWidth i &frameHeight aquestes s'omplen amb els valors de tamany de la textura
+		frameWidth = textWidth / givHorFrames;
+		frameHeight = textHeight / givVerFrames;
+		animSprite->renderRect.x = animSprite->renderRect.y = 0;
+		animSprite->textureRect.x = animSprite->textureRect.y = 0;
+		animSprite->renderRect.h = animSprite->textureRect.h = frameHeight;
+		animSprite->renderRect.w = animSprite->textureRect.w = frameWidth;
+	}
+
+	animatedSprite(sprite *givAnimSprite, int givTotFrames, int givHorFrames, int givVerFrames)
+	{
+		animSprite = givAnimSprite;
+		SDL_QueryTexture( animSprite->pTexture, NULL, NULL, &textWidth, &textHeight); //Al fer &textWidth i &frameHeight aquestes s'omplen amb els valors de tamany de la textura
+		frameWidth = textWidth / givHorFrames;
+		frameHeight = textHeight / givVerFrames;
+		animSprite->renderRect.x = animSprite->renderRect.y = 0;
+		animSprite->textureRect.x = animSprite->textureRect.y = 0;
+		animSprite->renderRect.h = animSprite->textureRect.h = frameHeight;
+		animSprite->renderRect.w = animSprite->textureRect.w = frameWidth;
+	}
+
+	void updateSprite()
+	{
+		frameTime++;
+		if (FPS / frameTime <= 10)
+		{
+			frameTime = 0;
+			animSprite->textureRect.x += frameWidth;
+			if (animSprite->textureRect.x >= textWidth)
+			{
+				animSprite->textureRect.x = 0;
+			}
+		}
+	}
+
+	void renderSprite()
+	{
+		animSprite->renderSprite();
+	}
+
+	void setSpritePos(int givX, int givY)
+	{
+		animSprite->renderRect.x = givX;
+		animSprite->renderRect.y = givY;
+	}
+
+
+	animatedSprite& operator =(const animatedSprite &otherSprite)
+	{
+		animSprite->renderer = otherSprite.animSprite->renderer;
+		animSprite->pTexture = otherSprite.animSprite->pTexture;
+		animSprite->textureRect = otherSprite.frameRect;
+		animSprite->renderRect = otherSprite.playerPosition;
+		textWidth = otherSprite.textWidth;
+		textHeight = otherSprite.textHeight;
+		frameWidth = otherSprite.frameWidth;
+		frameHeight = otherSprite.frameHeight;
+		frameTime = otherSprite.frameTime;
+		totFrames = otherSprite.totFrames;
+
+		return *this;
+	}
+
 };
