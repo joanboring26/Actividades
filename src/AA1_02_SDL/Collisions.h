@@ -7,10 +7,13 @@ struct boxCollision
 	int widthX;
 	int widthY;
 
+	Transform localTransform;
+
 	boxCollision(){}
 
 	boxCollision(int givX, int givY, int givWX, int givWY)
 	{
+		localTransform = Transform(givX, givY, givWX, givWY);
 		posX = givX;
 		posY = givY;
 		widthX = givWX;
@@ -43,6 +46,11 @@ struct boxCollision
 		if (posY + widthY < givBox->posY || posY > givBox->posY + givBox->widthY) return false;
 
 		return true;
+	}
+
+	void setPos(int givPosX, int givPosY)
+	{
+
 	}
 
 };

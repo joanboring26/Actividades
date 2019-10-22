@@ -22,7 +22,7 @@ void player::movePlayer(int addX, int addY)
 	posX += addX;
 	posY += addY;
 	updatePlayerSprite();
-	playerSprite->setSpritePos(posX, posY);
+	playerSprite->setPos(posX, posY);
 }
 
 void player::checkPlayerInputs(bool *givKeys, int playerNum)
@@ -96,7 +96,7 @@ void player::updatePlayer(bool *givKeys, int playerNum)
 		updatePlayerSprite();
 		posX += (velX * speed);
 		posY += (velY * speed);
-		playerSprite->setSpritePos(posX, posY);
+		playerSprite->setPos(posX, posY);
 	}
 }
 

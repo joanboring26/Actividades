@@ -23,12 +23,29 @@ struct Vector2
 	}
 };
 
+struct Transform
+{
+	Vector2 position;
+	Vector2 scale;
+
+	Transform()
+	{
+
+	}
+
+	Transform(int posX, int posY, int scaleX, int scaleY)
+	{
+		position.x = posX;
+		position.y = posY;
+		scale.x = scaleX;
+		scale.y = scaleY;
+	}
+};
+
 struct animatedSpriteSet
 {
 	Vector2 p1;
 	Vector2 p2;
-
-
 
 	animatedSpriteSet(int x1, int y1, int x2, int y2)
 	{
@@ -125,7 +142,7 @@ struct sprite
 		SDL_RenderCopy(renderer, pTexture, &textureRect, &renderRect);
 	}
 
-	void setSpritePos(int givX, int givY)
+	void setPos(int givX, int givY)
 	{
 		textureRect.x = givX;
 		textureRect.y = givY;
@@ -189,7 +206,7 @@ struct animatedSprite
 		animSprite->renderSprite();
 	}
 
-	void setSpritePos(int givX, int givY)
+	void setPos(int givX, int givY)
 	{
 		animSprite->renderRect.x = givX;
 		animSprite->renderRect.y = givY;

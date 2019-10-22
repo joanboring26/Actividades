@@ -9,6 +9,9 @@ struct entity
 	sprite *entitySprite;
 	boxCollision *entityCollider;
 
+	Vector2 spritePrevPos;
+	Vector2 colliderPrevPos;
+
 	entity()
 	{
 
@@ -37,6 +40,15 @@ struct entity
 		return entityCollider->boxColliding(givEnt.entityCollider);
 	}
 
+	void moveToGivenPos(int givPosX, int givPosY)
+	{
+		entitySprite->setPos(givPosX, givPosY);
+		entityCollider->setPos(givPosX, givPosY);
+	}
 
+	void moveToPreviousPos()
+	{
+		
+	}
 
 };
