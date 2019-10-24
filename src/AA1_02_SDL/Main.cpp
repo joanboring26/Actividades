@@ -240,6 +240,10 @@ int main(int, char*[])
 				mouseClicked = true;
 				player2.setNewAnim(animatedSpriteSet(Vector2(0, 32), Vector2(96, 64)));
 				break;
+			case SDL_MOUSEBUTTONUP:
+				mouseClicked = true;
+				player2.setNewAnim(animatedSpriteSet(Vector2(0, 0), Vector2(96, 32)));
+				break;
 			default:;
 			}
 		}
