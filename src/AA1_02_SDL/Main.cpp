@@ -12,6 +12,7 @@
 #include "const.h"
 #include "utils.h"
 #include "player.h"
+#include "sprite.h"
 
 
 
@@ -75,13 +76,14 @@ int main(int, char*[])
 
 	animatedSprite playerAnim1( m_renderer, "../../res/img/sp01.png", 200, 200, 6, 6, 1);
 	animatedSprite playerAnim2( m_renderer, "../../res/img/sp02.png", 200, 200, 6, 6, 1);
+	animatedSprite testAnim(m_renderer, "../../res/img/spCastle.png", 10, 10, Vector2(0,0), Vector2(96, 32), 96, 12, 8);
 
 #pragma endregion
 
 	// --- PLAYERS ---
 
 	player player1( &playerAnim1, 200, 200, 10);
-	player player2( &playerAnim2, 500, 500, 10);
+	player player2( &testAnim, 500, 500, 2);
 
 	// --- TEXT ---
 #pragma region 
@@ -138,6 +140,7 @@ int main(int, char*[])
 					break;
 				case SDL_MOUSEBUTTONDOWN:
 					mouseClicked = true;
+					player2.setNewAnim(animatedSpriteSet(Vector2(0, 32), Vector2(96, 64)));
 					break;
 				case SDL_MOUSEBUTTONUP:
 					mouseClicked = false;
@@ -230,6 +233,7 @@ int main(int, char*[])
 		}
 		else
 		{
+
 		// --- INPUT ---
 		gInp.getKeyboardInputs();
 
@@ -238,7 +242,7 @@ int main(int, char*[])
 
 		player1.updatePlayer( gInp.keyboard, 0);
 
-		player2.updatePlayer( gInp.keyboard, 1);
+		player2.updatePlayerTest( gInp.keyboard, 1);
 
 
 

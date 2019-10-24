@@ -2,6 +2,7 @@
 
 #include "Collisions.h"
 #include "utils.h"
+#include "sprite.h"
 
 struct entity
 {

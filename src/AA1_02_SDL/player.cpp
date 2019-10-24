@@ -1,5 +1,6 @@
 
 #include "utils.h"
+#include "sprite.h"
 #include "const.h"
 #include "Collisions.h"
 #include "player.h"
@@ -12,9 +13,19 @@ player::player(animatedSprite *givPlayerSprite, int givPosX, int givPosY, int gi
 	speed = givSpeed;
 }
 
+void player::setNewAnim(animatedSpriteSet newAnim)
+{
+	playerSprite->setNewAnim(newAnim);
+}
+
 void player::updatePlayerSprite()
 {
 	playerSprite->updateSprite();
+}
+
+void player::updatePlayerSpriteTest()
+{
+	playerSprite->updateSpriteTest();
 }
 
 void player::movePlayer(int addX, int addY)
@@ -94,6 +105,19 @@ void player::updatePlayer(bool *givKeys, int playerNum)
 	if (velX != 0 || velY != 0)
 	{
 		updatePlayerSprite();
+		posX += (velX * speed);
+		posY += (velY * speed);
+		playerSprite->setPos(posX, posY);
+	}
+}
+
+void player::updatePlayerTest(bool *givKeys, int playerNum)
+{
+	checkPlayerInputs(givKeys, playerNum);
+
+	if (velX != 0 || velY != 0)
+	{
+		updatePlayerSpriteTest();
 		posX += (velX * speed);
 		posY += (velY * speed);
 		playerSprite->setPos(posX, posY);

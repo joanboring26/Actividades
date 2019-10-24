@@ -1,5 +1,7 @@
 #pragma once
 
+#include "utils.h"
+
 struct boxCollision
 {
 	int posX;
