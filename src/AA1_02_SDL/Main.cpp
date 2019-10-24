@@ -234,6 +234,16 @@ int main(int, char*[])
 		else
 		{
 
+		while (SDL_PollEvent(&event)) {
+			switch (event.type) {
+			case SDL_MOUSEBUTTONDOWN:
+				mouseClicked = true;
+				player2.setNewAnim(animatedSpriteSet(Vector2(0, 32), Vector2(96, 64)));
+				break;
+			default:;
+			}
+		}
+
 		// --- INPUT ---
 		gInp.getKeyboardInputs();
 
