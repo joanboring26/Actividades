@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="player.cpp" />
+    <ClCompile Include="sprite.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Button.h" />

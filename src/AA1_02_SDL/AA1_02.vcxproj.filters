@@ -24,6 +24,9 @@
     <ClCompile Include="player.cpp">
       <Filter>Archivos de origen\Classes</Filter>
     </ClCompile>
+    <ClCompile Include="sprite.cpp">
+      <Filter>Archivos de origen\Classes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="types.h">

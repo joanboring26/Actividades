@@ -56,7 +56,7 @@ int main(int, char*[])
 	const Uint8 mixFlags(MIX_INIT_MP3 | MIX_INIT_OGG);
 
 	// --- SPRITES ---
-#pragma region
+#pragma region Sprites
 		//Background
 	SDL_Texture* bgTexture{ IMG_LoadTexture(m_renderer, "../../res/img/bg.jpg") };
 	if (bgTexture == nullptr) throw "Error: bgTexture init";
@@ -123,9 +123,11 @@ int main(int, char*[])
 	// --- INPUTS ---
 	inputs gInp;
 
-	while (isRunning) 
+	
+	while (isRunning)
 	{
 		std::cout << testTimer.updateTimer() << std::endl;
+		/*
 		if (!yes)
 		{
 			// HANDLE EVENTS
@@ -215,7 +217,7 @@ int main(int, char*[])
 
 			SDL_RenderClear(m_renderer);
 
-			// - Background - 
+			// - Background -
 			SDL_RenderCopy(m_renderer, bgTexture, nullptr, &bgRect);
 
 			// - Text -
@@ -223,16 +225,14 @@ int main(int, char*[])
 			playButton.RenderText(m_renderer);
 			musicButton.RenderText(m_renderer);
 
-			// - Player - 
+			// - Player -
 			SDL_RenderCopy(m_renderer, playerTexture, nullptr, &plRect);
 
 			// - Animated sprites -
 
-
 			SDL_RenderPresent(m_renderer);
 		}
-		else
-		{
+		*/
 
 		while (SDL_PollEvent(&event)) {
 			switch (event.type) {
@@ -254,9 +254,9 @@ int main(int, char*[])
 		// --- UPDATE ---
 
 
-		player1.updatePlayer( gInp.keyboard, 0);
+		player1.updatePlayer(gInp.keyboard, 0);
 
-		player2.updatePlayerTest( gInp.keyboard, 1);
+		player2.updatePlayerTest(gInp.keyboard, 1);
 
 
 
@@ -272,10 +272,9 @@ int main(int, char*[])
 
 		SDL_RenderPresent(m_renderer);
 
-		}
-
-
 	}
+
+
 
 	// --- DESTROY ---
 	SDL_DestroyTexture(bgTexture);
