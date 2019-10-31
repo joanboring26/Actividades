@@ -1,6 +1,7 @@
 
 #include "utils.h"
-#include "sprite.h"
+#include "animated_sprite.h"
+#include "sprite_set.h"
 #include "const.h"
 #include "Collisions.h"
 #include "player.h"

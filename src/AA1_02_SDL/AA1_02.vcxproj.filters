@@ -16,6 +16,15 @@
     <Filter Include="Archivos de origen\Classes">
       <UniqueIdentifier>{ada4f605-1d4b-42d3-9167-f3ebd43b622b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Archivos de origen\Classes\Visuals">
+      <UniqueIdentifier>{93602bd9-5e95-461c-9c25-e1d2b148ee67}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Archivos de encabezado\Classes">
+      <UniqueIdentifier>{307c37d0-8444-41a6-8f36-7ce6f54b4ba1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Archivos de encabezado\Classes\Visuals">
+      <UniqueIdentifier>{119898ea-e8a3-4e37-9c2b-0c3947ab6122}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -25,7 +34,10 @@
       <Filter>Archivos de origen\Classes</Filter>
     </ClCompile>
     <ClCompile Include="sprite.cpp">
-      <Filter>Archivos de origen\Classes</Filter>
+      <Filter>Archivos de origen\Classes\Visuals</Filter>
+    </ClCompile>
+    <ClCompile Include="animated_sprite.cpp">
+      <Filter>Archivos de origen\Classes\Visuals</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -50,8 +62,14 @@
     <ClInclude Include="entity.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
+    <ClInclude Include="animated_sprite.h">
+      <Filter>Archivos de encabezado\Classes\Visuals</Filter>
+    </ClInclude>
     <ClInclude Include="sprite.h">
-      <Filter>Archivos de encabezado</Filter>
+      <Filter>Archivos de encabezado\Classes\Visuals</Filter>
+    </ClInclude>
+    <ClInclude Include="sprite_set.h">
+      <Filter>Archivos de encabezado\Classes\Visuals</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

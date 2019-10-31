@@ -19,17 +19,20 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="animated_sprite.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="player.cpp" />
     <ClCompile Include="sprite.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="animated_sprite.h" />
     <ClInclude Include="Button.h" />
     <ClInclude Include="Collisions.h" />
     <ClInclude Include="const.h" />
     <ClInclude Include="entity.h" />
     <ClInclude Include="player.h" />
     <ClInclude Include="sprite.h" />
+    <ClInclude Include="sprite_set.h" />
     <ClInclude Include="types.h" />
     <ClInclude Include="utils.h" />
   </ItemGroup>
