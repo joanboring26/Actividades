@@ -71,5 +71,8 @@
     <ClInclude Include="sprite_set.h">
       <Filter>Archivos de encabezado\Classes\Visuals</Filter>
     </ClInclude>
+    <ClInclude Include="spriteData.h">
+      <Filter>Archivos de encabezado\Classes\Visuals</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

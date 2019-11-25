@@ -7,27 +7,22 @@
 #include <vector>
 #include "const.h"
 #include "utils.h"
+#include "spriteData.h"
 
 class sprite
 {
 public:
-	SDL_Renderer *renderer;
-	SDL_Texture *pTexture;
-	SDL_Rect textureRect, renderRect;
+	int id;
+
+	std::string textureName;
+
+	spriteData textureRect, renderRect;
 	int textWidth{ 0 }, textHeight{ 0 };
-private:
-	int frameTime = 0;
-	int totFrames;
 public:
 
-	sprite()
-	{
+	sprite();
 
-	}
-
-	sprite(SDL_Renderer *m_renderer, std::string givTexturePath, int posX, int posY, int scale);
-
-	void renderSprite();
+	sprite( std::string givTexturePath, int posX, int posY, int scale);
 
 	void setPos(int givX, int givY);
 };

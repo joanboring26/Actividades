@@ -32,6 +32,7 @@
     <ClInclude Include="entity.h" />
     <ClInclude Include="player.h" />
     <ClInclude Include="sprite.h" />
+    <ClInclude Include="spriteData.h" />
     <ClInclude Include="sprite_set.h" />
     <ClInclude Include="types.h" />
     <ClInclude Include="utils.h" />

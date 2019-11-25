@@ -10,19 +10,14 @@
 
 #pragma region Sprite
 
-sprite::sprite(SDL_Renderer *m_renderer, std::string givTexturePath, int posX, int posY, int scale)
+sprite::sprite( std::string givTexturePath, int posX, int posY, int scale) 
 {
-	renderer = m_renderer;
-	pTexture = IMG_LoadTexture(renderer, givTexturePath.c_str());
-	SDL_QueryTexture(pTexture, NULL, NULL, &textWidth, &textHeight);
+	textureRect.x = posX;
+	textureRect.y = posY;
+	textureRect.w /= scale;
+	textureRect.h /= posY;
 	textWidth /= scale;
 	textHeight /= scale;
-	textureRect = SDL_Rect{ posX, posY, textWidth, textHeight };
-}
-
-void sprite::renderSprite()
-{
-	SDL_RenderCopy(renderer, pTexture, &textureRect, &renderRect);
 }
 
 void sprite::setPos(int givX, int givY)
