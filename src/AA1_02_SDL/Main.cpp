@@ -13,6 +13,7 @@
 #include "utils.h"
 #include "player.h"
 #include "sprite.h"
+#include "animated_sprite.h"
 
 
 
@@ -273,8 +274,6 @@ int main(int, char*[])
 		SDL_RenderPresent(m_renderer);
 
 	}
-
-
 
 	// --- DESTROY ---
 	SDL_DestroyTexture(bgTexture);

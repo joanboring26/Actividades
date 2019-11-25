@@ -8,6 +8,8 @@
 #include "const.h"
 #include "utils.h"
 #include "sprite.h"
+#include "animated_sprite.h"
+#include "sprite_set.h"
 
 animatedSprite::animatedSprite(SDL_Renderer *m_renderer, std::string givTexturePath, int givposX, int givposY, int givTotFrames, int givHorFrames, int givVerFrames)
 {

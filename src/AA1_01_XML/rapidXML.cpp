@@ -12,26 +12,61 @@
 //PARTE1
 
 //b)
-struct arma
+class item
 {
+public:
+	virtual void getInfo()
+	{
+
+	}
+
+};
+
+class arma : public item
+{
+public:
 	std::string tipo;
 	std::string alcance;
+
+
+
+	void getInfo(int test)
+	{
+		std::cout << "IT WORKS!!";
+	}
 };
 
-struct enemigo {
+struct entidad {
 	int vitalidad;
-	int daño;
-	int defensa;
-	int frecuencia_ataque;
-	int experiencia;
-	using armas = std::map <std::string, arma>; // nos permite crear un map de armas que tienen su própio identificador y su value es un struct
+	entidad()
+	{
+
+	}
+	entidad(int givVitalidad, int t)
+	{
+		std::cout << "IT vfygccfg!!";
+	}
 };
 
-std::map < std::string, enemigo> enemigos; // se crea un map de enemigos que se identificaran con su nombre (key == nombre (string))
-											// y su value será una struct definida previamente
+struct enemigo : entidad {
+
+};
 
 
-//c)
+
+std::map < std::string, entidad> enemigos;
+
+int main()
+{
+	item* testItem;
+	arma test();
+	testItem = &test;
+	testItem->getInfo(2);
+
+	return 0;
+}
+
+/*
 int main() {
 
 	//CREACIÓN DEL DOCUMENTO XML DES DEL FICHERO XML (PARA LEERLO)
@@ -65,3 +100,4 @@ int main() {
 	}
 
 }
+*/

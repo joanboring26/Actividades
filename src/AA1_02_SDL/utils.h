@@ -98,3 +98,15 @@ struct timer
 		return false;
 	}
 };
+
+struct test :public timer
+{
+	int a;
+	int e;
+
+	test(int x, int y, float z) :timer(z)
+	{
+		a = x;
+		e = y;
+	}
+};
