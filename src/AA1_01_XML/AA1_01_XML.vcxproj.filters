@@ -37,5 +37,8 @@
     <Xml Include="XMLFile.xml">
       <Filter>Archivos de recursos</Filter>
     </Xml>
+    <Xml Include="XMLFile2.xml">
+      <Filter>Archivos de recursos</Filter>
+    </Xml>
   </ItemGroup>
 </Project>

@@ -1,5 +1,7 @@
 #pragma once
 
+#include "utils.h"
+
 struct boxCollision
 {
 	int posX;
@@ -7,10 +9,13 @@ struct boxCollision
 	int widthX;
 	int widthY;
 
+	Transform localTransform;
+
 	boxCollision(){}
 
 	boxCollision(int givX, int givY, int givWX, int givWY)
 	{
+		localTransform = Transform(givX, givY, givWX, givWY);
 		posX = givX;
 		posY = givY;
 		widthX = givWX;
@@ -29,11 +34,25 @@ struct boxCollision
 		}
 	}
 
-	bool boxCollisionCheck(int givX, int givY, int givWidthX, int givWidthY)
+	bool boxColliding( int givX, int givY, int givWidth, int givHeight)
 	{
-		if (posX + widthX < givX || posX > givX + givWidthX) return false;
-		if (posY + widthY < givY || posY > givY + givWidthY) return false;
+		if (posX + givWidth < givX || posX > givX + givWidth) return false;
+		if (posY + givHeight < givY || posY > givY + givHeight) return false;
 
 		return true;
 	}
+
+	bool boxColliding(boxCollision *givBox)
+	{
+		if (posX + widthX < givBox->posX || posX > givBox->posX + givBox->widthX) return false;
+		if (posY + widthY < givBox->posY || posY > givBox->posY + givBox->widthY) return false;
+
+		return true;
+	}
+
+	void setPos(int givPosX, int givPosY)
+	{
+
+	}
+
 };

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<entities>
+  
+  <entity type ="enemy">
+    <health>100</health>
+    <inventory>
+      <weapon name ="ratSlayer">
+        <damage>20</damage>
+        <magsize>10</magsize>
+      </weapon>
+      <weapon name ="smg">
+        <damage>4</damage>
+        <magsize>30</magsize>
+      </weapon>
+    </inventory>
+    <xp>100</xp>
+    <name>DonJuan</name>
+  </entity>
+  
+  <entity type ="allied">
+    <health>200</health>
+    <inventory>
+      <potion effect ="Heal">
+        <damagenumber>50</damagenumber>
+      </potion>
+      <potion effect ="Damage">
+        <damagenumber>100</damagenumber>
+      </potion>
+    </inventory>
+    <xp>100</xp>
+    <name>DonJuan</name>
+  </entity>
+  
+</entities>

@@ -12,6 +12,8 @@
 #include "const.h"
 #include "utils.h"
 #include "player.h"
+#include "sprite.h"
+#include "animated_sprite.h"
 
 
 
@@ -55,10 +57,11 @@ int main(int, char*[])
 	const Uint8 mixFlags(MIX_INIT_MP3 | MIX_INIT_OGG);
 
 	// --- SPRITES ---
-#pragma region
+#pragma region Sprites
 		//Background
 	SDL_Texture* bgTexture{ IMG_LoadTexture(m_renderer, "../../res/img/bg.jpg") };
 	if (bgTexture == nullptr) throw "Error: bgTexture init";
+	sprite testSprite( m_renderer, "../../res/img/kintoun.png", 500, 500, 2);
 
 	SDL_Rect bgRect{ 0, 0,SCREEN_WIDTH, SCREEN_HEIGHT };
 
@@ -72,15 +75,16 @@ int main(int, char*[])
 	//-->Animated Sprite ---
 #pragma region 
 
-	animatedSprite playerAnim1( m_renderer, "../../res/img/sp01.png", 6, 6, 1);
-	animatedSprite playerAnim2( m_renderer, "../../res/img/sp01.png", 6, 6, 1);
+	animatedSprite playerAnim1( m_renderer, "../../res/img/sp01.png", 200, 200, 6, 6, 1);
+	animatedSprite playerAnim2( m_renderer, "../../res/img/sp02.png", 200, 200, 6, 6, 1);
+	animatedSprite testAnim(m_renderer, "../../res/img/spCastle.png", 10, 10, Vector2(0,0), Vector2(96, 32), 96, 12, 8);
 
 #pragma endregion
 
 	// --- PLAYERS ---
 
 	player player1( &playerAnim1, 200, 200, 10);
-	player player2( &playerAnim2, 500, 500, 10);
+	player player2( &testAnim, 500, 500, 2);
 
 	// --- TEXT ---
 #pragma region 
@@ -120,9 +124,11 @@ int main(int, char*[])
 	// --- INPUTS ---
 	inputs gInp;
 
-	while (isRunning) 
+	
+	while (isRunning)
 	{
 		std::cout << testTimer.updateTimer() << std::endl;
+		/*
 		if (!yes)
 		{
 			// HANDLE EVENTS
@@ -137,6 +143,7 @@ int main(int, char*[])
 					break;
 				case SDL_MOUSEBUTTONDOWN:
 					mouseClicked = true;
+					player2.setNewAnim(animatedSpriteSet(Vector2(0, 32), Vector2(96, 64)));
 					break;
 				case SDL_MOUSEBUTTONUP:
 					mouseClicked = false;
@@ -211,7 +218,7 @@ int main(int, char*[])
 
 			SDL_RenderClear(m_renderer);
 
-			// - Background - 
+			// - Background -
 			SDL_RenderCopy(m_renderer, bgTexture, nullptr, &bgRect);
 
 			// - Text -
@@ -219,35 +226,52 @@ int main(int, char*[])
 			playButton.RenderText(m_renderer);
 			musicButton.RenderText(m_renderer);
 
-			// - Player - 
+			// - Player -
 			SDL_RenderCopy(m_renderer, playerTexture, nullptr, &plRect);
 
 			// - Animated sprites -
 
-
 			SDL_RenderPresent(m_renderer);
 		}
-		else
-		{
+		*/
+
+		while (SDL_PollEvent(&event)) {
+			switch (event.type) {
+			case SDL_MOUSEBUTTONDOWN:
+				mouseClicked = true;
+				player2.setNewAnim(animatedSpriteSet(Vector2(0, 32), Vector2(96, 64)));
+				break;
+			case SDL_MOUSEBUTTONUP:
+				mouseClicked = true;
+				player2.setNewAnim(animatedSpriteSet(Vector2(0, 0), Vector2(96, 32)));
+				break;
+			default:;
+			}
+		}
+
 		// --- INPUT ---
 		gInp.getKeyboardInputs();
 
 		// --- UPDATE ---
 
 
-		player1.updatePlayer( gInp.keyboard, 0);
+		player1.updatePlayer(gInp.keyboard, 0);
 
-		player2.updatePlayer(gInp.keyboard, 1);
+		player2.updatePlayerTest(gInp.keyboard, 1);
+
+
 
 		// --- RENDER ---
+
+		// - Background - 
+		SDL_RenderCopy(m_renderer, bgTexture, nullptr, &bgRect);
+
+		testSprite.renderSprite();
 
 		player1.renderPlayer();
 		player2.renderPlayer();
 
 		SDL_RenderPresent(m_renderer);
-
-		}
-
 
 	}
 
