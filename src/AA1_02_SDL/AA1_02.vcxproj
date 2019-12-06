@@ -25,6 +25,7 @@
     <ClInclude Include="Button.h" />
     <ClInclude Include="Collisions.h" />
     <ClInclude Include="const.h" />
+    <ClInclude Include="obstacle.h" />
     <ClInclude Include="player.h" />
     <ClInclude Include="types.h" />
     <ClInclude Include="utils.h" />

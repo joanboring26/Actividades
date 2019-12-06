@@ -28,4 +28,12 @@ struct boxCollision
 			return false;
 		}
 	}
+
+	bool boxCollisionCheck(int givX, int givY, int givWidthX, int givWidthY)
+	{
+		if (posX + widthX < givX || posX > givX + givWidthX) return false;
+		if (posY + widthY < givY || posY > givY + givWidthY) return false;
+
+		return true;
+	}
 };
